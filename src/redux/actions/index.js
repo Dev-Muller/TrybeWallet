@@ -1,3 +1,5 @@
+import { getFetch } from '../../services/fetchAPI';
+
 // Coloque aqui suas actions
 export const EMAIL = 'email';
 export const TOTAL = 'total';
@@ -15,11 +17,10 @@ export const totalValue = (payload) => ({
 
 export const currency = (payload) => ({
   type: CURRENCY,
-  payload,
+  payload: Object.keys(payload),
 });
 
-// export const USER_INFO = 'user_info';
-// export const userAction = (param) => ({
-//   type: USER_INFO,
-//   payload: param,
-// });
+export const fetchThunk = () => async (dispatch) => {
+  const moedas = await getFetch();
+  dispatch(currency(moedas));
+};
