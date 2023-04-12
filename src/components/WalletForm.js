@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchThunk } from '../redux/actions';
+import { fetchRatesThunk, fetchThunk } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
@@ -10,6 +10,7 @@ class WalletForm extends Component {
     description: '',
     method: 'Dinheiro',
     tag: 'Alimentação',
+    id: 0,
   };
 
   componentDidMount() {
@@ -20,6 +21,21 @@ class WalletForm extends Component {
   handleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value }, this.validate);
+  };
+
+  handleClick = async (event) => {
+    event.preventDefault();
+    const { dispatch } = this.props;
+    const { id } = this.state;
+    this.setState({ id: id + 1 });
+    dispatch(fetchRatesThunk(this.state));
+    this.setState({
+      value: '',
+      currency: 'USD',
+      description: '',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+    });
   };
 
   render() {
@@ -98,9 +114,9 @@ class WalletForm extends Component {
           </label>
           <button
             type="button"
-            // onClick={ this.handleClick }
+            onClick={ this.handleClick }
           >
-            Adicionar
+            Adicionar despesa
           </button>
         </form>
       </div>

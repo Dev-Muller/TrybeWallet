@@ -4,6 +4,7 @@ import { getFetch } from '../../services/fetchAPI';
 export const EMAIL = 'email';
 export const TOTAL = 'total';
 export const CURRENCY = 'currency';
+export const EXPENSES = 'expenses';
 
 export const emailLogin = (payload) => ({
   type: EMAIL,
@@ -20,7 +21,18 @@ export const currency = (payload) => ({
   payload: Object.keys(payload),
 });
 
+export const expenses = (payload) => ({
+  type: EXPENSES,
+  payload,
+});
+
 export const fetchThunk = () => async (dispatch) => {
   const moedas = await getFetch();
   dispatch(currency(moedas));
+};
+
+export const fetchRatesThunk = (payload) => async (dispatch) => {
+  const exchangeRates = await getFetch();
+  const moedas = { ...payload, exchangeRates };
+  dispatch(expenses(moedas));
 };
