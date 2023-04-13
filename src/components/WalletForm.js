@@ -53,6 +53,7 @@ class WalletForm extends Component {
               value={ value }
               onChange={ this.handleChange }
               data-testid="value-input"
+              min={ 0 }
             />
           </label>
           <label htmlFor="currencyInput">
