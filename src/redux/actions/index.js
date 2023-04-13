@@ -6,6 +6,8 @@ export const TOTAL = 'total';
 export const CURRENCY = 'currency';
 export const EXPENSES = 'expenses';
 export const REMOVE_EXPENSE = 'remove_expense';
+export const EDIT_EXPENSE = 'edit_expense';
+export const FINISH_EDIT = 'finish_edit';
 
 export const emailLogin = (payload) => ({
   type: EMAIL,
@@ -29,6 +31,16 @@ export const expenses = (payload) => ({
 
 export const removeExpense = (payload) => ({
   type: REMOVE_EXPENSE,
+  payload,
+});
+
+export const editExpense = (payload) => ({
+  type: EDIT_EXPENSE,
+  payload,
+});
+
+export const finishEdit = (payload) => ({
+  type: FINISH_EDIT,
   payload,
 });
 

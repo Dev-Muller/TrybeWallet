@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchRatesThunk, fetchThunk } from '../redux/actions';
+import { fetchRatesThunk, fetchThunk, finishEdit } from '../redux/actions';
 
+const alimentacao = 'Alimentação';
 class WalletForm extends Component {
   state = {
     value: '',
     currency: 'USD',
     description: '',
     method: 'Dinheiro',
-    tag: 'Alimentação',
+    tag: alimentacao,
     id: 0,
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchThunk());
+  }
+
+  componentDidUpdate(prevProp) {
+    const { isEditing, editedId, expenses } = this.props;
+    if (prevProp.isEditing !== isEditing && isEditing) {
+      console.log(expenses);
+      console.log(editedId);
+      this.setState({
+        value: expenses[editedId].value,
+        currency: expenses[editedId].currency,
+        description: expenses[editedId].description,
+        method: expenses[editedId].method,
+        tag: expenses[editedId].tag,
+      });
+    }
   }
 
   handleChange = ({ target }) => {
@@ -34,13 +50,35 @@ class WalletForm extends Component {
       currency: 'USD',
       description: '',
       method: 'Dinheiro',
-      tag: 'Alimentação',
+      tag: alimentacao,
+    });
+  };
+
+  editExpense = () => {
+    const { dispatch, editedId, expenses } = this.props;
+    const { value, currency, description, method, tag } = this.state;
+    const newArr = [...expenses];
+    newArr[editedId] = {
+      ...expenses[editedId],
+      value,
+      currency,
+      description,
+      method,
+      tag,
+    };
+    dispatch(finishEdit(newArr));
+    this.setState({
+      value: '',
+      currency: 'USD',
+      description: '',
+      method: 'Dinheiro',
+      tag: alimentacao,
     });
   };
 
   render() {
     const { value, currency, description, method, tag } = this.state;
-    const { currencies } = this.props;
+    const { currencies, isEditing } = this.props;
     return (
       <div>
         <form action="">
@@ -113,12 +151,20 @@ class WalletForm extends Component {
               data-testid="description-input"
             />
           </label>
-          <button
-            type="button"
-            onClick={ this.handleClick }
-          >
-            Adicionar despesa
-          </button>
+          { isEditing ? (
+            <button
+              type="button"
+              onClick={ this.editExpense }
+            >
+              Editar despesa
+            </button>)
+            : (
+              <button
+                type="button"
+                onClick={ this.handleClick }
+              >
+                Adicionar despesa
+              </button>)}
         </form>
       </div>
     );

@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { removeExpense } from '../redux/actions';
+import { editExpense, removeExpense } from '../redux/actions';
 
 class Table extends Component {
   removeBtn = (indexToRemove) => {
     const { expenses, dispatch } = this.props;
     const newExpenses = expenses.filter((_expense, index) => index !== indexToRemove);
     dispatch(removeExpense(newExpenses));
+  };
+
+  editBtn = (id) => {
+    const { dispatch } = this.props;
+    dispatch(editExpense(id));
   };
 
   render() {
@@ -44,7 +49,12 @@ class Table extends Component {
                 </td>
                 <td>Real</td>
                 <td>
-                  <button>Editar</button>
+                  <button
+                    data-testid="edit-btn"
+                    onClick={ () => this.editBtn(expense.id) }
+                  >
+                    Editar
+                  </button>
                   <button
                     data-testid="delete-btn"
                     onClick={ () => this.removeBtn(index) }
