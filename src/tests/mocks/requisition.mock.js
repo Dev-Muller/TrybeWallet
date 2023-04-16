@@ -1,5 +1,6 @@
 const dataRepetida = '2023-04-14 17:59:56';
-// const dataRepetida2 = ;
+const dataRepetida2 = '2023-04-14 17:59:57';
+
 export default requiredMock = {
   USD: {
     code: 'USD',
@@ -39,7 +40,7 @@ export default requiredMock = {
     bid: '6.0912',
     ask: '6.0964',
     timestamp: '1681505997',
-    create_date: '2023-04-14 17:59:57',
+    create_date: dataRepetida2,
   },
   ARS: {
     code: 'ARS',
@@ -91,7 +92,7 @@ export default requiredMock = {
     bid: '5.3937',
     ask: '5.3986',
     timestamp: '1681505997',
-    create_date: '2023-04-14 17:59:57',
+    create_date: dataRepetida2,
   },
   JPY: {
     code: 'JPY',
@@ -117,7 +118,7 @@ export default requiredMock = {
     bid: '5.4883',
     ask: '5.495',
     timestamp: '1681505997',
-    create_date: '2023-04-14 17:59:57',
+    create_date: dataRepetida2,
   },
   AUD: {
     code: 'AUD',
@@ -198,4 +199,3 @@ export default requiredMock = {
     create_date: '2023-04-14 21:39:40',
   },
 };
-
