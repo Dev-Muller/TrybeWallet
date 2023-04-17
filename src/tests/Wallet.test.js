@@ -99,8 +99,8 @@ describe('Testar pagina wallet', () => {
     const credit = 'Cartão de crédito';
 
     userEvent.type(valueInput, '1');
-    userEvent.type(descriptionInput, 'Um DOGE');
-    userEvent.selectOptions(currencyInput, 'DOGE');
+    userEvent.type(descriptionInput, 'Um CAD');
+    userEvent.selectOptions(currencyInput, 'CAD');
     userEvent.selectOptions(methodInput, credit);
     userEvent.selectOptions(tagInput, 'Transporte');
     userEvent.click(addDespesaBtn);
@@ -109,10 +109,10 @@ describe('Testar pagina wallet', () => {
       {
         id: 0,
         value: '1',
-        currency: 'DOGE',
+        currency: 'CAD',
         method: credit,
         tag: 'Transporte',
-        description: 'Um DOGE',
+        description: 'Um CAD',
         exchangeRates: mockData,
       },
     ];
@@ -130,10 +130,10 @@ describe('Testar pagina wallet', () => {
       {
         id: 0,
         value: '1',
-        currency: 'DOGE',
+        currency: 'CAD',
         method: 'Dinheiro',
         tag: 'Transporte',
-        description: 'Um DOGE',
+        description: 'Um CAD',
         exchangeRates: mockData,
       },
       {
@@ -166,8 +166,8 @@ describe('Testar pagina wallet', () => {
     const debit = 'Cartão de débito';
 
     userEvent.type(valueInput, '1');
-    userEvent.type(descriptionInput, 'Um DOGE');
-    userEvent.selectOptions(currencyInput, 'DOGE');
+    userEvent.type(descriptionInput, 'Um CAD');
+    userEvent.selectOptions(currencyInput, 'CAD');
     userEvent.selectOptions(methodInput, 'Dinheiro');
     userEvent.selectOptions(tagInput, 'Transporte');
     userEvent.click(addDespesaBtn);
@@ -176,10 +176,10 @@ describe('Testar pagina wallet', () => {
       {
         id: 0,
         value: '1',
-        currency: 'DOGE',
+        currency: 'CAD',
         method: 'Dinheiro',
         tag: 'Transporte',
-        description: 'Um DOGE',
+        description: 'Um CAD',
         exchangeRates: mockData,
       },
     ];
@@ -197,10 +197,10 @@ describe('Testar pagina wallet', () => {
       {
         id: 0,
         value: '1',
-        currency: 'DOGE',
+        currency: 'CAD',
         method: 'Dinheiro',
         tag: 'Transporte',
-        description: 'Um DOGE',
+        description: 'Um CAD',
         exchangeRates: mockData,
       },
       {
@@ -239,8 +239,8 @@ describe('Testar pagina wallet', () => {
     const debit = 'Cartão de débito';
 
     userEvent.type(valueInput, '1');
-    userEvent.type(descriptionInput, 'Um DOGE');
-    userEvent.selectOptions(currencyInput, 'DOGE');
+    userEvent.type(descriptionInput, 'Um CAD');
+    userEvent.selectOptions(currencyInput, 'CAD');
     userEvent.selectOptions(methodInput, 'Dinheiro');
     userEvent.selectOptions(tagInput, 'Transporte');
     userEvent.click(addDespesaBtn);
@@ -249,10 +249,10 @@ describe('Testar pagina wallet', () => {
       {
         id: 0,
         value: '1',
-        currency: 'DOGE',
+        currency: 'CAD',
         method: 'Dinheiro',
         tag: 'Transporte',
-        description: 'Um DOGE',
+        description: 'Um CAD',
         exchangeRates: mockData,
       },
     ];
@@ -270,10 +270,10 @@ describe('Testar pagina wallet', () => {
       {
         id: 0,
         value: '1',
-        currency: 'DOGE',
+        currency: 'CAD',
         method: 'Dinheiro',
         tag: 'Transporte',
-        description: 'Um DOGE',
+        description: 'Um CAD',
         exchangeRates: mockData,
       },
       {

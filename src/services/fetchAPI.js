@@ -4,5 +4,6 @@ export const getFetch = async () => {
   // const { USDT, ...data} = await API.json();
   delete data.USDT;
   // delete explicado pelo Clecio turma 29
+  console.log(data);
   return data;
 };
