@@ -3,24 +3,13 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import App from '../App';
 import Wallet from '../pages/Wallet';
-import requiredMock from './mocks/requisition.mock';
-
-const valueInput = screen.getByTestId('value-input');
-const currencyInput = screen.getByTestId('currency-input');
-const methodInput = screen.getByTestId('method-input');
-const tagInput = screen.getByTestId('tag-input');
-const descriptionInput = screen.getByTestId('description-input');
-const addDespesaBtn = screen.getByRole('button', {
-  name: /adicionar despesa/i,
-});
-const credit = 'Cartão de crédito';
-const debit = 'Cartão de débito';
+import mockData from './helpers/mockData';
 
 describe('Testar pagina wallet', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(requiredMock),
+      json: jest.fn().mockResolvedValue(mockData),
     });
   });
   it('Testa se email total e BRL estão no Header', () => {
@@ -40,6 +29,16 @@ describe('Testar pagina wallet', () => {
     const initialEntries = ['/carteira'];
     const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
     expect(history.location.pathname).toBe('/carteira');
+    const valueInput = screen.getByTestId('value-input');
+    const currencyInput = screen.getByTestId('currency-input');
+    const methodInput = screen.getByTestId('method-input');
+    const tagInput = screen.getByTestId('tag-input');
+    const descriptionInput = screen.getByTestId('description-input');
+    const addDespesaBtn = screen.getByRole('button', {
+      name: /adicionar despesa/i,
+    });
+    // const credit = 'Cartão de crédito';
+    // const debit = 'Cartão de débito';
 
     expect(valueInput).toBeInTheDocument();
     expect(currencyInput).toBeInTheDocument();
@@ -107,7 +106,7 @@ describe('Testar pagina wallet', () => {
         method: credit,
         tag: 'Transporte',
         description: 'Um DOGE',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
     ];
 
@@ -128,7 +127,7 @@ describe('Testar pagina wallet', () => {
         method: credit,
         tag: 'Transporte',
         description: 'Um DOGE',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
       {
         id: 1,
@@ -137,7 +136,7 @@ describe('Testar pagina wallet', () => {
         method: debit,
         tag: 'Trabalho',
         description: 'Tres EUR',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
     ];
 
@@ -164,7 +163,7 @@ describe('Testar pagina wallet', () => {
         method: 'Dinheiro',
         tag: 'Transporte',
         description: 'Um DOGE',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
     ];
 
@@ -185,7 +184,7 @@ describe('Testar pagina wallet', () => {
         method: 'Dinheiro',
         tag: 'Transporte',
         description: 'Um DOGE',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
       {
         id: 1,
@@ -194,7 +193,7 @@ describe('Testar pagina wallet', () => {
         method: debit,
         tag: 'Trabalho',
         description: 'Tres EUR',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
     ];
 
@@ -226,7 +225,7 @@ describe('Testar pagina wallet', () => {
         method: 'Dinheiro',
         tag: 'Transporte',
         description: 'Um DOGE',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
     ];
 
@@ -247,7 +246,7 @@ describe('Testar pagina wallet', () => {
         method: 'Dinheiro',
         tag: 'Transporte',
         description: 'Um DOGE',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
       {
         id: 1,
@@ -256,7 +255,7 @@ describe('Testar pagina wallet', () => {
         method: debit,
         tag: 'Trabalho',
         description: 'Tres EUR',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
     ];
 
@@ -280,7 +279,7 @@ describe('Testar pagina wallet', () => {
         method: credit,
         tag: 'Transporte',
         description: 'Dois USD',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
       {
         id: 1,
@@ -289,7 +288,7 @@ describe('Testar pagina wallet', () => {
         method: debit,
         tag: 'Trabalho',
         description: 'Tres EUR',
-        exchangeRates: requiredMock,
+        exchangeRates: mockData,
       },
     ];
     expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa3);
