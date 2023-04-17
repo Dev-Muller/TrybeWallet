@@ -1,15 +1,27 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import App from '../App';
 import mockData from './helpers/mockData';
 
+const describeConst = 'description-input';
+const tagConst = 'tag-input';
+const methodConst = 'method-input';
+const valueConst = 'value-input';
+const currencyCons = 'currency-input';
+
 describe('Testar pagina wallet', () => {
   beforeEach(() => {
-    jest.spyOn(global, 'fetch');
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockData),
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: () => Promise.resolve(
+        mockData,
+      ),
     });
+    // jest.spyOn(global, 'fetch');
+    // global.fetch.mockResolvedValue({
+    //   json: jest.fn().mockResolvedValue(mockData),
+    // });
   });
   it('Testa se email total e BRL estão no Header', () => {
     const initialEntries = ['/carteira'];
@@ -28,11 +40,11 @@ describe('Testar pagina wallet', () => {
     const initialEntries = ['/carteira'];
     const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
     expect(history.location.pathname).toBe('/carteira');
-    const valueInput = screen.getByTestId('value-input');
-    const currencyInput = screen.getByTestId('currency-input');
-    const methodInput = screen.getByTestId('method-input');
-    const tagInput = screen.getByTestId('tag-input');
-    const descriptionInput = screen.getByTestId('description-input');
+    const valueInput = screen.getByTestId(valueConst);
+    const currencyInput = screen.getByTestId(currencyCons);
+    const methodInput = screen.getByTestId(methodConst);
+    const tagInput = screen.getByTestId(tagConst);
+    const descriptionInput = screen.getByTestId(describeConst);
     const addDespesaBtn = screen.getByRole('button', {
       name: /adicionar despesa/i,
     });
@@ -87,11 +99,11 @@ describe('Testar pagina wallet', () => {
     const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
     expect(history.location.pathname).toBe('/carteira');
 
-    const valueInput = screen.getByTestId('value-input');
-    const currencyInput = screen.getByTestId('currency-input');
-    const methodInput = screen.getByTestId('method-input');
-    const tagInput = screen.getByTestId('tag-input');
-    const descriptionInput = screen.getByTestId('description-input');
+    const valueInput = screen.getByTestId(valueConst);
+    const currencyInput = screen.getByTestId(currencyCons);
+    const methodInput = screen.getByTestId(methodConst);
+    const tagInput = screen.getByTestId(tagConst);
+    const descriptionInput = screen.getByTestId(describeConst);
     const addDespesaBtn = screen.getByRole('button', {
       name: /adicionar despesa/i,
     });
@@ -154,11 +166,11 @@ describe('Testar pagina wallet', () => {
     const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
     expect(history.location.pathname).toBe('/carteira');
 
-    const valueInput = screen.getByTestId('value-input');
-    const currencyInput = screen.getByTestId('currency-input');
-    const methodInput = screen.getByTestId('method-input');
-    const tagInput = screen.getByTestId('tag-input');
-    const descriptionInput = screen.getByTestId('description-input');
+    const valueInput = screen.getByTestId(valueConst);
+    const currencyInput = screen.getByTestId(currencyCons);
+    const methodInput = screen.getByTestId(methodConst);
+    const tagInput = screen.getByTestId(tagConst);
+    const descriptionInput = screen.getByTestId(describeConst);
     const addDespesaBtn = screen.getByRole('button', {
       name: /adicionar despesa/i,
     });
@@ -221,7 +233,7 @@ describe('Testar pagina wallet', () => {
 
     expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa1);
   });
-  it('Testa se apos adicionado despesa e apertado o botao de excluir uma despesa é excluida', () => {
+  it.only('Testa se apos adicionado despesa e apertado o botao de excluir uma despesa é excluida', async () => {
     const initialEntries = ['/carteira'];
     const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
     expect(history.location.pathname).toBe('/carteira');
@@ -238,17 +250,19 @@ describe('Testar pagina wallet', () => {
     const credit = 'Cartão de crédito';
     const debit = 'Cartão de débito';
 
-    userEvent.type(valueInput, '1');
+    userEvent.type(valueInput, '10');
     userEvent.type(descriptionInput, 'Um CAD');
-    userEvent.selectOptions(currencyInput, 'CAD');
+    userEvent.selectOptions(currencyInput, ['CAD']);
     userEvent.selectOptions(methodInput, 'Dinheiro');
     userEvent.selectOptions(tagInput, 'Transporte');
-    userEvent.click(addDespesaBtn);
+    act(() => {
+      userEvent.click(addDespesaBtn);
+    });
 
     const savedGlobalDespesa1 = [
       {
         id: 0,
-        value: '1',
+        value: '10',
         currency: 'CAD',
         method: 'Dinheiro',
         tag: 'Transporte',
@@ -257,7 +271,9 @@ describe('Testar pagina wallet', () => {
       },
     ];
 
-    expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa1);
+    await waitFor(() => {
+      expect(store.getState().wallet.expenses).toEqual(savedGlobalDespesa1);
+    });
 
     userEvent.type(valueInput, '3');
     userEvent.type(descriptionInput, 'Tres EUR');

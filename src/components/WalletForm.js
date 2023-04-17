@@ -22,8 +22,8 @@ class WalletForm extends Component {
   componentDidUpdate(prevProp) {
     const { isEditing, editedId, expenses } = this.props;
     if (prevProp.isEditing !== isEditing && isEditing) {
-      console.log(expenses);
-      console.log(editedId);
+      // console.log(expenses);
+      // console.log(editedId);
       this.setState({
         value: expenses[editedId].value,
         currency: expenses[editedId].currency,
