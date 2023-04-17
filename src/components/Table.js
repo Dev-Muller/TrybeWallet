@@ -33,9 +33,9 @@ class Table extends Component {
               <th>Editar/Excluir</th>
             </tr>
           </thead>
-          {expenses.map((expense, index) => (
-            <tbody key={ expense.id }>
-              <tr>
+          <tbody>
+            {expenses.map((expense, index) => (
+              <tr key={ expense.id }>
                 <td>{expense.description}</td>
                 <td>{expense.tag}</td>
                 <td>{expense.method}</td>
@@ -63,8 +63,8 @@ class Table extends Component {
                   </button>
                 </td>
               </tr>
-            </tbody>
-          ))}
+            ))}
+          </tbody>
         </table>
       </div>
     );

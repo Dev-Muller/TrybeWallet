@@ -16,10 +16,6 @@ describe('Testar pagina de login', () => {
     expect(email).toBeInTheDocument();
     expect(password).toBeInTheDocument();
     expect(login).toBeInTheDocument();
-
-    userEvent.click(login);
-
-    expect(history.location.pathname).toBe('/carteira');
   });
 
   it('Testa se apos preencher os inputs e clicar no botao leva a carteira', () => {

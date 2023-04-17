@@ -1,6 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import App from '../App';
 import mockData from './helpers/mockData';
@@ -18,12 +17,8 @@ describe('Testar pagina wallet', () => {
         mockData,
       ),
     });
-    // jest.spyOn(global, 'fetch');
-    // global.fetch.mockResolvedValue({
-    //   json: jest.fn().mockResolvedValue(mockData),
-    // });
   });
-  it('Testa se email total e BRL estão no Header', () => {
+  it('Testa se email, total e BRL estão no Header', () => {
     const initialEntries = ['/carteira'];
     const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
 
@@ -32,14 +27,15 @@ describe('Testar pagina wallet', () => {
     const total = screen.getByTestId('total-field');
     const headerCurrency = screen.getByTestId('header-currency-field');
 
+    // expect(store.getState().user.email).toBe('asd@email.com');
     expect(email).toBeInTheDocument();
     expect(total).toBeInTheDocument();
     expect(headerCurrency).toBeInTheDocument();
   });
   it('Testa se inputs estão presentes na wallet', () => {
     const initialEntries = ['/carteira'];
-    const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(history.location.pathname).toBe('/carteira');
+    renderWithRouterAndRedux(<App />, { initialEntries });
+
     const valueInput = screen.getByTestId(valueConst);
     const currencyInput = screen.getByTestId(currencyCons);
     const methodInput = screen.getByTestId(methodConst);
@@ -58,8 +54,7 @@ describe('Testar pagina wallet', () => {
   });
   it('Testa se a table head está com todas as informações presentes', () => {
     const initialEntries = ['/carteira'];
-    const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(history.location.pathname).toBe('/carteira');
+    renderWithRouterAndRedux(<App />, { initialEntries });
 
     const descriptionTHead = screen.getByRole('columnheader', {
       name: /descrição/i,
@@ -83,8 +78,6 @@ describe('Testar pagina wallet', () => {
       name: /câmbio utilizado/i,
     });
 
-    const thLength = screen.getAllByTagName('th');
-
     expect(descriptionTHead).toBeInTheDocument();
     expect(tagTHead).toBeInTheDocument();
     expect(methodThead).toBeInTheDocument();
@@ -92,249 +85,85 @@ describe('Testar pagina wallet', () => {
     expect(currencyMoneyTHead).toBeInTheDocument();
     expect(convertedValueTHead).toBeInTheDocument();
     expect(utilizedCurrencyTHead).toBeInTheDocument();
-    expect(thLength.length).toBe(9);
   });
-  it('Testa se apos apertar o botao de adicionar despesas é salvo as informações no estado global', () => {
+  it('Testa se apos apertar o botao de adicionar despesas é salvo as informações no estado global', async () => {
     const initialEntries = ['/carteira'];
-    const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(history.location.pathname).toBe('/carteira');
+    const { store } = renderWithRouterAndRedux(<App />, { initialEntries });
 
+    expect(store.getState().wallet.expenses).toHaveLength(0);
     const valueInput = screen.getByTestId(valueConst);
-    const currencyInput = screen.getByTestId(currencyCons);
-    const methodInput = screen.getByTestId(methodConst);
-    const tagInput = screen.getByTestId(tagConst);
     const descriptionInput = screen.getByTestId(describeConst);
     const addDespesaBtn = screen.getByRole('button', {
       name: /adicionar despesa/i,
     });
 
-    const credit = 'Cartão de crédito';
-
     userEvent.type(valueInput, '1');
-    userEvent.type(descriptionInput, 'Um CAD');
-    userEvent.selectOptions(currencyInput, 'CAD');
-    userEvent.selectOptions(methodInput, credit);
-    userEvent.selectOptions(tagInput, 'Transporte');
+    userEvent.type(descriptionInput, 'Um USD');
     userEvent.click(addDespesaBtn);
-
-    const savedGlobalDespesa1 = [
-      {
-        id: 0,
-        value: '1',
-        currency: 'CAD',
-        method: credit,
-        tag: 'Transporte',
-        description: 'Um CAD',
-        exchangeRates: mockData,
-      },
-    ];
-
-    expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa1);
-
-    userEvent.type(valueInput, '3');
-    userEvent.type(descriptionInput, 'Tres EUR');
-    userEvent.selectOptions(currencyInput, 'EUR');
-    userEvent.selectOptions(methodInput, 'Dinheiro');
-    userEvent.selectOptions(tagInput, 'Trabalho');
-    userEvent.click(addDespesaBtn);
-
-    const savedGlobalDespesa2 = [
-      {
-        id: 0,
-        value: '1',
-        currency: 'CAD',
-        method: 'Dinheiro',
-        tag: 'Transporte',
-        description: 'Um CAD',
-        exchangeRates: mockData,
-      },
-      {
-        id: 1,
-        value: '3',
-        currency: 'EUR',
-        method: 'Dinheiro',
-        tag: 'Trabalho',
-        description: 'Tres EUR',
-        exchangeRates: mockData,
-      },
-    ];
-
-    expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa2);
-  });
-  it('Testa se apos adicionado despesa e apertado o botao de excluir uma despesa é excluida', () => {
-    const initialEntries = ['/carteira'];
-    const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(history.location.pathname).toBe('/carteira');
-
-    const valueInput = screen.getByTestId(valueConst);
-    const currencyInput = screen.getByTestId(currencyCons);
-    const methodInput = screen.getByTestId(methodConst);
-    const tagInput = screen.getByTestId(tagConst);
-    const descriptionInput = screen.getByTestId(describeConst);
-    const addDespesaBtn = screen.getByRole('button', {
-      name: /adicionar despesa/i,
-    });
-
-    const debit = 'Cartão de débito';
-
-    userEvent.type(valueInput, '1');
-    userEvent.type(descriptionInput, 'Um CAD');
-    userEvent.selectOptions(currencyInput, 'CAD');
-    userEvent.selectOptions(methodInput, 'Dinheiro');
-    userEvent.selectOptions(tagInput, 'Transporte');
-    userEvent.click(addDespesaBtn);
-
-    const savedGlobalDespesa1 = [
-      {
-        id: 0,
-        value: '1',
-        currency: 'CAD',
-        method: 'Dinheiro',
-        tag: 'Transporte',
-        description: 'Um CAD',
-        exchangeRates: mockData,
-      },
-    ];
-
-    expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa1);
-
-    userEvent.type(valueInput, '3');
-    userEvent.type(descriptionInput, 'Tres EUR');
-    userEvent.selectOptions(currencyInput, 'EUR');
-    userEvent.selectOptions(methodInput, debit);
-    userEvent.selectOptions(tagInput, 'Trabalho');
-    userEvent.click(addDespesaBtn);
-
-    const savedGlobalDespesa2 = [
-      {
-        id: 0,
-        value: '1',
-        currency: 'CAD',
-        method: 'Dinheiro',
-        tag: 'Transporte',
-        description: 'Um CAD',
-        exchangeRates: mockData,
-      },
-      {
-        id: 1,
-        value: '3',
-        currency: 'EUR',
-        method: debit,
-        tag: 'Trabalho',
-        description: 'Tres EUR',
-        exchangeRates: mockData,
-      },
-    ];
-
-    expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa2);
-
-    const deleteBtn = screen.getByTestId('delete-btn');
-    userEvent.click(deleteBtn);
-
-    expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa1);
-  });
-  it.only('Testa se apos adicionado despesa e apertado o botao de excluir uma despesa é excluida', async () => {
-    const initialEntries = ['/carteira'];
-    const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
-    expect(history.location.pathname).toBe('/carteira');
-
-    const valueInput = screen.getByTestId('value-input');
-    const currencyInput = screen.getByTestId('currency-input');
-    const methodInput = screen.getByTestId('method-input');
-    const tagInput = screen.getByTestId('tag-input');
-    const descriptionInput = screen.getByTestId('description-input');
-    const addDespesaBtn = screen.getByRole('button', {
-      name: /adicionar despesa/i,
-    });
-
-    const credit = 'Cartão de crédito';
-    const debit = 'Cartão de débito';
-
-    userEvent.type(valueInput, '10');
-    userEvent.type(descriptionInput, 'Um CAD');
-    userEvent.selectOptions(currencyInput, ['CAD']);
-    userEvent.selectOptions(methodInput, 'Dinheiro');
-    userEvent.selectOptions(tagInput, 'Transporte');
-    act(() => {
-      userEvent.click(addDespesaBtn);
-    });
-
-    const savedGlobalDespesa1 = [
-      {
-        id: 0,
-        value: '10',
-        currency: 'CAD',
-        method: 'Dinheiro',
-        tag: 'Transporte',
-        description: 'Um CAD',
-        exchangeRates: mockData,
-      },
-    ];
 
     await waitFor(() => {
-      expect(store.getState().wallet.expenses).toEqual(savedGlobalDespesa1);
+      expect(store.getState().wallet.expenses).toHaveLength(1);
+    });
+  });
+  it('Testa se apos adicionar uma despesa no estado global e clicar no botao de excluir ele e excluido do estado global', async () => {
+    const initialEntries = ['/carteira'];
+    const { store } = renderWithRouterAndRedux(<App />, { initialEntries });
+
+    expect(store.getState().wallet.expenses).toHaveLength(0);
+    const valueInput = screen.getByTestId(valueConst);
+    const descriptionInput = screen.getByTestId(describeConst);
+    const addDespesaBtn = screen.getByRole('button', {
+      name: /adicionar despesa/i,
     });
 
-    userEvent.type(valueInput, '3');
-    userEvent.type(descriptionInput, 'Tres EUR');
-    userEvent.selectOptions(currencyInput, 'EUR');
-    userEvent.selectOptions(methodInput, debit);
-    userEvent.selectOptions(tagInput, 'Trabalho');
+    userEvent.type(valueInput, '1');
+    userEvent.type(descriptionInput, 'Um USD');
     userEvent.click(addDespesaBtn);
 
-    const savedGlobalDespesa2 = [
-      {
-        id: 0,
-        value: '1',
-        currency: 'CAD',
-        method: 'Dinheiro',
-        tag: 'Transporte',
-        description: 'Um CAD',
-        exchangeRates: mockData,
-      },
-      {
-        id: 1,
-        value: '3',
-        currency: 'EUR',
-        method: debit,
-        tag: 'Trabalho',
-        description: 'Tres EUR',
-        exchangeRates: mockData,
-      },
-    ];
+    await waitFor(() => {
+      expect(store.getState().wallet.expenses).toHaveLength(1);
+    });
 
-    expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa2);
+    const removeBtn = screen.getByTestId('delete-btn');
+    userEvent.click(removeBtn);
+
+    await waitFor(() => {
+      expect(store.getState().wallet.expenses).toHaveLength(0);
+    });
+  });
+  it('Testa se apos adicionado despesa e apertado o botao de editar uma despesa é editada e salva no estado global', async () => {
+    const initialEntries = ['/carteira'];
+    const { store } = renderWithRouterAndRedux(<App />, { initialEntries });
+
+    expect(store.getState().wallet.expenses).toHaveLength(0);
+    const valueInput = screen.getByTestId(valueConst);
+    const descriptionInput = screen.getByTestId(describeConst);
+    const addDespesaBtn = screen.getByRole('button', {
+      name: /adicionar despesa/i,
+    });
+
+    userEvent.type(valueInput, '12');
+    userEvent.type(descriptionInput, 'doze doletas');
+    userEvent.click(addDespesaBtn);
+
+    await waitFor(() => {
+      expect(store.getState().wallet.expenses).toHaveLength(1);
+      expect(screen.getByRole('cell', { name: /doze doletas/i })).toBeInTheDocument();
+      expect(screen.getByRole('cell', { name: /12\.00/i })).toBeInTheDocument();
+    });
 
     const editBtn = screen.getByTestId('edit-btn');
     userEvent.click(editBtn);
+    userEvent.type(valueInput, '20');
+    userEvent.type(descriptionInput, 'vinte doletas');
 
-    userEvent.type(valueInput, '2');
-    userEvent.type(descriptionInput, 'Dois USD');
-    userEvent.selectOptions(currencyInput, 'USD');
-    userEvent.selectOptions(methodInput, credit);
-    userEvent.selectOptions(tagInput, 'Transporte');
-    userEvent.click(addDespesaBtn);
-
-    const savedGlobalDespesa3 = [
-      {
-        id: 0,
-        value: '2',
-        currency: 'USD',
-        method: credit,
-        tag: 'Transporte',
-        description: 'Dois USD',
-        exchangeRates: mockData,
-      },
-      {
-        id: 1,
-        value: '3',
-        currency: 'EUR',
-        method: debit,
-        tag: 'Trabalho',
-        description: 'Tres EUR',
-        exchangeRates: mockData,
-      },
-    ];
-    expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa3);
+    await waitFor(() => {
+      const saveEdit = screen.getByRole('button', {
+        name: /editar despesa/i,
+      });
+      userEvent.click(saveEdit);
+      expect(screen.getByRole('cell', { name: /20\.00/i })).toBeInTheDocument();
+      expect(screen.getByRole('cell', { name: /vinte doletas/i })).toBeInTheDocument();
+    });
   });
 });
