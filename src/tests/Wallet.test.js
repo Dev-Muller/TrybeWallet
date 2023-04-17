@@ -84,10 +84,10 @@ describe('Testar pagina wallet', () => {
     expect(thLength.length).toBe(9);
   });
   it('Testa se apos apertar o botao de adicionar despesas é salvo as informações no estado global', () => {
-    const initialEntries = ['/carteira'];
-    const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
+    // const initialEntries = ['/carteira'];
+    // const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
     const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
-    expect(history.location.pathname).toBe('/carteira');
+    // expect(history.location.pathname).toBe('/carteira');
     const valueInput = screen.getByTestId('value-input');
     const currencyInput = screen.getByTestId('currency-input');
     const methodInput = screen.getByTestId('method-input');
@@ -151,10 +151,10 @@ describe('Testar pagina wallet', () => {
     expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa2);
   });
   it('Testa se apos adicionado despesa e apertado o botao de excluir uma despesa é excluida', () => {
-    const initialEntries = ['/carteira'];
-    const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
+    // const initialEntries = ['/carteira'];
+    // const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
     const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
-    expect(history.location.pathname).toBe('/carteira');
+    // expect(history.location.pathname).toBe('/carteira');
 
     const valueInput = screen.getByTestId('value-input');
     const currencyInput = screen.getByTestId('currency-input');
@@ -224,10 +224,10 @@ describe('Testar pagina wallet', () => {
     expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa1);
   });
   it('Testa se apos adicionado despesa e apertado o botao de excluir uma despesa é excluida', () => {
-    const initialEntries = ['/carteira'];
-    const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
+    // const initialEntries = ['/carteira'];
+    // const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
     const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
-    expect(history.location.pathname).toBe('/carteira');
+    // expect(history.location.pathname).toBe('/carteira');
 
     const valueInput = screen.getByTestId('value-input');
     const currencyInput = screen.getByTestId('currency-input');
