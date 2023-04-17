@@ -37,8 +37,6 @@ describe('Testar pagina wallet', () => {
     const addDespesaBtn = screen.getByRole('button', {
       name: /adicionar despesa/i,
     });
-    // const credit = 'Cartão de crédito';
-    // const debit = 'Cartão de débito';
 
     expect(valueInput).toBeInTheDocument();
     expect(currencyInput).toBeInTheDocument();
@@ -90,6 +88,16 @@ describe('Testar pagina wallet', () => {
     const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
     const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
     expect(history.location.pathname).toBe('/carteira');
+    const valueInput = screen.getByTestId('value-input');
+    const currencyInput = screen.getByTestId('currency-input');
+    const methodInput = screen.getByTestId('method-input');
+    const tagInput = screen.getByTestId('tag-input');
+    const descriptionInput = screen.getByTestId('description-input');
+    const addDespesaBtn = screen.getByRole('button', {
+      name: /adicionar despesa/i,
+    });
+
+    const credit = 'Cartão de crédito';
 
     userEvent.type(valueInput, '1');
     userEvent.type(descriptionInput, 'Um DOGE');
@@ -115,7 +123,7 @@ describe('Testar pagina wallet', () => {
     userEvent.type(valueInput, '3');
     userEvent.type(descriptionInput, 'Tres EUR');
     userEvent.selectOptions(currencyInput, 'EUR');
-    userEvent.selectOptions(methodInput, debit);
+    userEvent.selectOptions(methodInput, 'Dinheiro');
     userEvent.selectOptions(tagInput, 'Trabalho');
     fireEvent.click(addDespesaBtn);
 
@@ -124,7 +132,7 @@ describe('Testar pagina wallet', () => {
         id: 0,
         value: '1',
         currency: 'DOGE',
-        method: credit,
+        method: 'Dinheiro',
         tag: 'Transporte',
         description: 'Um DOGE',
         exchangeRates: mockData,
@@ -133,7 +141,7 @@ describe('Testar pagina wallet', () => {
         id: 1,
         value: '3',
         currency: 'EUR',
-        method: debit,
+        method: 'Dinheiro',
         tag: 'Trabalho',
         description: 'Tres EUR',
         exchangeRates: mockData,
@@ -147,6 +155,17 @@ describe('Testar pagina wallet', () => {
     const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
     const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
     expect(history.location.pathname).toBe('/carteira');
+
+    const valueInput = screen.getByTestId('value-input');
+    const currencyInput = screen.getByTestId('currency-input');
+    const methodInput = screen.getByTestId('method-input');
+    const tagInput = screen.getByTestId('tag-input');
+    const descriptionInput = screen.getByTestId('description-input');
+    const addDespesaBtn = screen.getByRole('button', {
+      name: /adicionar despesa/i,
+    });
+
+    const debit = 'Cartão de débito';
 
     userEvent.type(valueInput, '1');
     userEvent.type(descriptionInput, 'Um DOGE');
@@ -209,6 +228,18 @@ describe('Testar pagina wallet', () => {
     const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
     const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
     expect(history.location.pathname).toBe('/carteira');
+
+    const valueInput = screen.getByTestId('value-input');
+    const currencyInput = screen.getByTestId('currency-input');
+    const methodInput = screen.getByTestId('method-input');
+    const tagInput = screen.getByTestId('tag-input');
+    const descriptionInput = screen.getByTestId('description-input');
+    const addDespesaBtn = screen.getByRole('button', {
+      name: /adicionar despesa/i,
+    });
+
+    const credit = 'Cartão de crédito';
+    const debit = 'Cartão de débito';
 
     userEvent.type(valueInput, '1');
     userEvent.type(descriptionInput, 'Um DOGE');
