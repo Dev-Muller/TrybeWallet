@@ -1,8 +1,7 @@
-import { screen, fireEvent, act } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import App from '../App';
-import Wallet from '../pages/Wallet';
 import mockData from './helpers/mockData';
 
 describe('Testar pagina wallet', () => {
@@ -84,10 +83,10 @@ describe('Testar pagina wallet', () => {
     expect(thLength.length).toBe(9);
   });
   it('Testa se apos apertar o botao de adicionar despesas é salvo as informações no estado global', () => {
-    // const initialEntries = ['/carteira'];
-    // const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
-    const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
-    // expect(history.location.pathname).toBe('/carteira');
+    const initialEntries = ['/carteira'];
+    const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
+    expect(history.location.pathname).toBe('/carteira');
+
     const valueInput = screen.getByTestId('value-input');
     const currencyInput = screen.getByTestId('currency-input');
     const methodInput = screen.getByTestId('method-input');
@@ -104,9 +103,7 @@ describe('Testar pagina wallet', () => {
     userEvent.selectOptions(currencyInput, 'DOGE');
     userEvent.selectOptions(methodInput, credit);
     userEvent.selectOptions(tagInput, 'Transporte');
-    act(() => {
-      fireEvent.click(addDespesaBtn);
-    });
+    userEvent.click(addDespesaBtn);
 
     const savedGlobalDespesa1 = [
       {
@@ -127,9 +124,7 @@ describe('Testar pagina wallet', () => {
     userEvent.selectOptions(currencyInput, 'EUR');
     userEvent.selectOptions(methodInput, 'Dinheiro');
     userEvent.selectOptions(tagInput, 'Trabalho');
-    act(() => {
-      fireEvent.click(addDespesaBtn);
-    });
+    userEvent.click(addDespesaBtn);
 
     const savedGlobalDespesa2 = [
       {
@@ -155,10 +150,9 @@ describe('Testar pagina wallet', () => {
     expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa2);
   });
   it('Testa se apos adicionado despesa e apertado o botao de excluir uma despesa é excluida', () => {
-    // const initialEntries = ['/carteira'];
-    // const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
-    const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
-    // expect(history.location.pathname).toBe('/carteira');
+    const initialEntries = ['/carteira'];
+    const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
+    expect(history.location.pathname).toBe('/carteira');
 
     const valueInput = screen.getByTestId('value-input');
     const currencyInput = screen.getByTestId('currency-input');
@@ -176,9 +170,7 @@ describe('Testar pagina wallet', () => {
     userEvent.selectOptions(currencyInput, 'DOGE');
     userEvent.selectOptions(methodInput, 'Dinheiro');
     userEvent.selectOptions(tagInput, 'Transporte');
-    act(() => {
-      fireEvent.click(addDespesaBtn);
-    });
+    userEvent.click(addDespesaBtn);
 
     const savedGlobalDespesa1 = [
       {
@@ -199,9 +191,7 @@ describe('Testar pagina wallet', () => {
     userEvent.selectOptions(currencyInput, 'EUR');
     userEvent.selectOptions(methodInput, debit);
     userEvent.selectOptions(tagInput, 'Trabalho');
-    act(() => {
-      fireEvent.click(addDespesaBtn);
-    });
+    userEvent.click(addDespesaBtn);
 
     const savedGlobalDespesa2 = [
       {
@@ -227,15 +217,14 @@ describe('Testar pagina wallet', () => {
     expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa2);
 
     const deleteBtn = screen.getByTestId('delete-btn');
-    fireEvent.click(deleteBtn);
+    userEvent.click(deleteBtn);
 
     expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa1);
   });
   it('Testa se apos adicionado despesa e apertado o botao de excluir uma despesa é excluida', () => {
-    // const initialEntries = ['/carteira'];
-    // const { history } = renderWithRouterAndRedux(<App />, { initialEntries });
-    const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
-    // expect(history.location.pathname).toBe('/carteira');
+    const initialEntries = ['/carteira'];
+    const { history, store } = renderWithRouterAndRedux(<App />, { initialEntries });
+    expect(history.location.pathname).toBe('/carteira');
 
     const valueInput = screen.getByTestId('value-input');
     const currencyInput = screen.getByTestId('currency-input');
@@ -254,9 +243,7 @@ describe('Testar pagina wallet', () => {
     userEvent.selectOptions(currencyInput, 'DOGE');
     userEvent.selectOptions(methodInput, 'Dinheiro');
     userEvent.selectOptions(tagInput, 'Transporte');
-    act(() => {
-      fireEvent.click(addDespesaBtn);
-    });
+    userEvent.click(addDespesaBtn);
 
     const savedGlobalDespesa1 = [
       {
@@ -277,9 +264,7 @@ describe('Testar pagina wallet', () => {
     userEvent.selectOptions(currencyInput, 'EUR');
     userEvent.selectOptions(methodInput, debit);
     userEvent.selectOptions(tagInput, 'Trabalho');
-    act(() => {
-      fireEvent.click(addDespesaBtn);
-    });
+    userEvent.click(addDespesaBtn);
 
     const savedGlobalDespesa2 = [
       {
@@ -305,16 +290,14 @@ describe('Testar pagina wallet', () => {
     expect(store.getState().wallet.expenses).toBe(savedGlobalDespesa2);
 
     const editBtn = screen.getByTestId('edit-btn');
-    fireEvent.click(editBtn);
+    userEvent.click(editBtn);
 
     userEvent.type(valueInput, '2');
     userEvent.type(descriptionInput, 'Dois USD');
     userEvent.selectOptions(currencyInput, 'USD');
     userEvent.selectOptions(methodInput, credit);
     userEvent.selectOptions(tagInput, 'Transporte');
-    act(() => {
-      fireEvent.click(addDespesaBtn);
-    });
+    userEvent.click(addDespesaBtn);
 
     const savedGlobalDespesa3 = [
       {
