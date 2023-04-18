@@ -28,7 +28,6 @@ describe('Testar pagina wallet', () => {
     const total = screen.getByTestId('total-field');
     const headerCurrency = screen.getByTestId('header-currency-field');
 
-    // expect(store.getState().user.email).toBe('asd@email.com');
     expect(email).toBeInTheDocument();
     expect(total).toBeInTheDocument();
     expect(headerCurrency).toBeInTheDocument();
@@ -100,7 +99,9 @@ describe('Testar pagina wallet', () => {
 
     userEvent.type(valueInput, '1');
     userEvent.type(descriptionInput, 'Um USD');
-    userEvent.click(addDespesaBtn);
+    act(() => {
+      userEvent.click(addDespesaBtn);
+    });
 
     await waitFor(() => {
       expect(store.getState().wallet.expenses).toHaveLength(1);
@@ -119,14 +120,19 @@ describe('Testar pagina wallet', () => {
 
     userEvent.type(valueInput, '1');
     userEvent.type(descriptionInput, 'Um USD');
-    userEvent.click(addDespesaBtn);
+    act(() => {
+      userEvent.click(addDespesaBtn);
+    });
 
     await waitFor(() => {
       expect(store.getState().wallet.expenses).toHaveLength(1);
     });
 
     const removeBtn = screen.getByTestId('delete-btn');
-    userEvent.click(removeBtn);
+
+    act(() => {
+      userEvent.click(removeBtn);
+    });
 
     await waitFor(() => {
       expect(store.getState().wallet.expenses).toHaveLength(0);
@@ -153,12 +159,9 @@ describe('Testar pagina wallet', () => {
 
     await waitFor(() => {
       expect(store.getState().wallet.expenses).toHaveLength(1);
-    }, {
-      timeout: 3000,
+      expect(screen.getByRole('cell', { name: /doze doletas/i })).toBeInTheDocument();
+      expect(screen.getByRole('cell', { name: /12\.00/i })).toBeInTheDocument();
     });
-
-    // expect(screen.getByRole('cell', { name: /doze doletas/i })).toBeInTheDocument();
-    // expect(screen.getByRole('cell', { name: /12\.00/i })).toBeInTheDocument();
 
     const editBtn = screen.getByTestId('edit-btn');
     userEvent.click(editBtn);
@@ -169,7 +172,11 @@ describe('Testar pagina wallet', () => {
       const saveEdit = screen.getByRole('button', {
         name: /editar despesa/i,
       });
-      userEvent.click(saveEdit);
+
+      act(() => {
+        userEvent.click(saveEdit);
+      });
+
       expect(screen.getByRole('cell', { name: /20\.00/i })).toBeInTheDocument();
       expect(screen.getByRole('cell', { name: /vinte doletas/i })).toBeInTheDocument();
     });

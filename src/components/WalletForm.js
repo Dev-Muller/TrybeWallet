@@ -140,10 +140,10 @@ class WalletForm extends Component {
               <option value="Saúde">Saúde</option>
             </select>
           </label>
-          <label htmlFor="valueInput">
+          <label htmlFor="descriptionInput">
             Descrição:
             <input
-              type="textarea"
+              type="text"
               name="description"
               id="descriptionInput"
               value={ description }
