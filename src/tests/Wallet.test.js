@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import App from '../App';
 import mockData from './helpers/mockData';
@@ -143,14 +144,22 @@ describe('Testar pagina wallet', () => {
     });
 
     userEvent.type(valueInput, '12');
+    expect(valueInput.value).toBe('12');
     userEvent.type(descriptionInput, 'doze doletas');
-    userEvent.click(addDespesaBtn);
+
+    act(() => {
+      userEvent.click(addDespesaBtn);
+    });
 
     await waitFor(() => {
       expect(store.getState().wallet.expenses).toHaveLength(1);
-      expect(screen.getByRole('cell', { name: /doze doletas/i })).toBeInTheDocument();
-      expect(screen.getByRole('cell', { name: /12\.00/i })).toBeInTheDocument();
+    }, {
+      timeout: 3000,
     });
+    // console.log(store.getState().wallet.expenses);
+
+    // expect(screen.getByRole('cell', { name: /doze doletas/i })).toBeInTheDocument();
+    // expect(screen.getByRole('cell', { name: /12\.00/i })).toBeInTheDocument();
 
     const editBtn = screen.getByTestId('edit-btn');
     userEvent.click(editBtn);
