@@ -156,7 +156,6 @@ describe('Testar pagina wallet', () => {
     }, {
       timeout: 3000,
     });
-    // console.log(store.getState().wallet.expenses);
 
     // expect(screen.getByRole('cell', { name: /doze doletas/i })).toBeInTheDocument();
     // expect(screen.getByRole('cell', { name: /12\.00/i })).toBeInTheDocument();
